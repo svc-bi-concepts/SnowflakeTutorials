@@ -47,13 +47,6 @@ sequenceDiagram
     Snowflake-->>BI Tool: Authorized Session
 ```
 
-### Visual Guide
-
-<figure markdown="span">
-  ![OAuth Flow Overview](../images/oauth-flow-diagram.png){ width="700" loading=lazy }
-  <figcaption>Click the image to expand — OAuth authentication flow between Power BI, Azure AD, and Snowflake</figcaption>
-</figure>
-
 ---
 
 ## Pros and Cons
