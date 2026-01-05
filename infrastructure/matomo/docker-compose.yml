@@ -1,0 +1,52 @@
+services:
+  matomo:
+    image: matomo:latest
+    container_name: matomo
+    restart: unless-stopped
+    ports:
+      - "8080:80"  # Change left port if 8080 is in use
+    environment:
+      - MATOMO_DATABASE_HOST=matomo-db
+      - MATOMO_DATABASE_ADAPTER=mysql
+      - MATOMO_DATABASE_TABLES_PREFIX=matomo_
+      - MATOMO_DATABASE_USERNAME=matomo
+      - MATOMO_DATABASE_PASSWORD=${MATOMO_DB_PASSWORD:-matomo_secure_password}
+      - MATOMO_DATABASE_DBNAME=matomo
+    volumes:
+      - matomo_data:/var/www/html
+    depends_on:
+      matomo-db:
+        condition: service_healthy
+    networks:
+      - matomo-network
+
+  matomo-db:
+    image: mariadb:10.11
+    container_name: matomo-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_secure_password}
+      - MYSQL_DATABASE=matomo
+      - MYSQL_USER=matomo
+      - MYSQL_PASSWORD=${MATOMO_DB_PASSWORD:-matomo_secure_password}
+    volumes:
+      - matomo_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - matomo-network
+
+volumes:
+  matomo_data:
+    driver: local
+  matomo_db_data:
+    driver: local
+
+networks:
+  matomo-network:
+    driver: bridge
+

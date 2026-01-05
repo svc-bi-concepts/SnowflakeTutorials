@@ -1,0 +1,126 @@
+site_name: Snowflake User Guide
+site_description: Comprehensive guide for connecting BI tools to Snowflake
+site_author: Your Organization
+site_url: https://docs.example.com
+
+theme:
+  name: material
+  palette:
+    # Dark mode (default)
+    - scheme: slate
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Light mode
+    - scheme: default
+      primary: deep purple
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  
+  font:
+    text: Inter
+    code: JetBrains Mono
+  
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+  
+  icon:
+    logo: material/snowflake
+    repo: fontawesome/brands/github
+
+  custom_dir: docs/overrides
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - tables
+  - attr_list
+  - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+  - tags
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      auto_caption: false
+      caption_position: bottom
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-org
+  generator: false
+  
+  # Matomo Analytics Configuration
+  analytics:
+    provider: matomo
+    url: http://localhost:8080/  # Local Matomo instance (change to production URL when deploying)
+    site_id: 1  # Matomo Site ID for "Snowflake Documentation"
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: getting-started/overview.md
+    - Prerequisites: getting-started/prerequisites.md
+  - Authentication Methods:
+    - Overview: authentication/overview.md
+    - Quick Reference: authentication/quick-reference.md
+    - OAuth / Service Principal: authentication/oauth-sso.md
+    - Programmatic Tokens: authentication/programmatic-tokens.md
+    - Key-Pair Authentication: authentication/key-pair.md
+    - Username & Password: authentication/username-password.md
+  - BI Tool Guides:
+    - Tableau: bi-tools/tableau.md
+    - Power BI: bi-tools/power-bi.md
+    - Excel: bi-tools/excel.md
+  - Platform Guides:
+    - Windows: platforms/windows.md
+    - macOS: platforms/macos.md
+  - Best Practices:
+    - Security: best-practices/security.md
+    - Performance: best-practices/performance.md
+  - Troubleshooting: troubleshooting.md
+

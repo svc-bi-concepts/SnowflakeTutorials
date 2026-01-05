@@ -1,0 +1,186 @@
+/* Custom styling for Snowflake documentation */
+
+:root {
+  /* Snowflake-inspired colors */
+  --sf-primary: #29b5e8;
+  --sf-secondary: #2d5bb9;
+  --sf-accent: #00c7b7;
+  --sf-dark: #0f1c2e;
+}
+
+/* Enhanced admonition styling */
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  border-color: var(--sf-accent);
+}
+
+.md-typeset .admonition.tip > .admonition-title,
+.md-typeset details.tip > summary {
+  background-color: rgba(0, 199, 183, 0.1);
+}
+
+/* Pro/Con boxes styling */
+.pros-cons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .pros-cons-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pros-box, .cons-box {
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.pros-box {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-color: #4caf50;
+}
+
+.cons-box {
+  background-color: rgba(244, 67, 54, 0.1);
+  border-color: #f44336;
+}
+
+.pros-box h4, .cons-box h4 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Authentication method cards */
+.auth-method-card {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: box-shadow 0.3s ease;
+}
+
+.auth-method-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Security level badges */
+.security-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.security-high {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.security-medium {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.security-low {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+[data-md-color-scheme="slate"] .security-high {
+  background-color: rgba(46, 125, 50, 0.2);
+}
+
+[data-md-color-scheme="slate"] .security-medium {
+  background-color: rgba(245, 124, 0, 0.2);
+}
+
+[data-md-color-scheme="slate"] .security-low {
+  background-color: rgba(198, 40, 40, 0.2);
+}
+
+/* Platform compatibility table styling */
+.compatibility-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.compatibility-table th,
+.compatibility-table td {
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.compatibility-table th {
+  background-color: var(--md-default-fg-color--lightest);
+}
+
+/* Status icons */
+.status-full::before {
+  content: "✅";
+  margin-right: 0.25rem;
+}
+
+.status-partial::before {
+  content: "⚠️";
+  margin-right: 0.25rem;
+}
+
+.status-none::before {
+  content: "❌";
+  margin-right: 0.25rem;
+}
+
+/* Hero section styling */
+.hero-section {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, var(--sf-primary) 0%, var(--sf-secondary) 100%);
+  border-radius: 16px;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.hero-section h1 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+/* Material for MkDocs grid cards are handled natively - no custom CSS needed */
+
+/* Code block enhancements */
+.md-typeset pre > code {
+  border-radius: 8px;
+}
+
+/* Table of contents enhancements */
+.md-nav__link--active {
+  font-weight: 600;
+}
+
+/* Fix anchor link scrolling to account for sticky header */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  scroll-margin-top: 4rem;
+}
+
+/* Ensure smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
