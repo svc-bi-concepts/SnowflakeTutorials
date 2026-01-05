@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://docs.example.com/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/troubleshooting/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/troubleshooting/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/authentication/entra-unified-oauth/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/authentication/entra-unified-oauth/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/authentication/key-pair/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/authentication/key-pair/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/authentication/oauth-sso/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/authentication/oauth-sso/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/authentication/overview/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/authentication/overview/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/authentication/programmatic-tokens/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/authentication/programmatic-tokens/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/authentication/quick-reference/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/authentication/quick-reference/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/authentication/username-password/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/authentication/username-password/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/best-practices/performance/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/best-practices/performance/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/best-practices/security/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/best-practices/security/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/bi-tools/excel/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/bi-tools/excel/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/bi-tools/power-bi/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/bi-tools/power-bi/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/bi-tools/tableau/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/bi-tools/tableau/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/getting-started/overview/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/getting-started/overview/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/getting-started/prerequisites/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/getting-started/prerequisites/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/platforms/macos/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/platforms/macos/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.com/platforms/windows/</loc>
+         <loc>https://svc-bi-concepts.github.io/SnowflakeTutorials/platforms/windows/</loc>
          <lastmod>2026-01-05</lastmod>
     </url>
 </urlset>

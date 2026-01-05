@@ -10,3 +10,9 @@
   {% endif %}
 {% endblock %}
 
+{% block content %}
+  {{ super() }}
+  
+  <!-- Floating Feedback Button -->
+  {% include "partials/feedback-button.html" %}
+{% endblock %}
