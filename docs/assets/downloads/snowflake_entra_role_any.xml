@@ -6,7 +6,7 @@
   <oauthConfigId>custom_sf_entra_role_any</oauthConfigId>
   <!-- Description: Optional user-friendly label shown instead of the raw oauthConfigId (allowed chars: alphanum, _, -, space). -->
   <configLabel>Entra_Role_Any</configLabel>
-  <!-- Tableau Desktop public/native client -->
+  <!-- Tableau Desktop public/native client - from "Tableau Desktop - Snowflake" Entra app -->
   <clientIdDesktop>YOUR_TABLEAU_CLIENT_APP_ID</clientIdDesktop>
   <clientSecretDesktop></clientSecretDesktop>
 
@@ -27,7 +27,7 @@
   <scopes>email</scopes>
   <scopes>offline_access</scopes>
 
-  <!-- IMPORTANT: This must match your Entra "Snowflake OAuth Resource" Application ID URI + scope name -->
+  <!-- IMPORTANT: Replace YOUR_RESOURCE_APP_ID with the Application ID from your "Snowflake OAuth Resource" Entra app -->
   <scopes>api://YOUR_RESOURCE_APP_ID/session:role-any</scopes>
 
   <capabilities>

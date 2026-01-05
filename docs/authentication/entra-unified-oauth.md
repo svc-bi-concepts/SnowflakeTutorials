@@ -67,7 +67,7 @@ This guide references **two Entra app registrations**. Use consistent naming to 
 | Component | Description |
 |-----------|-------------|
 | **Tableau OAuth XML** | Config file in `OAuthConfigs` folder defining IdP, scopes, and redirects |
-| **Entra Client App** | Public/native app with localhost redirect URIs for desktop callback |
+| **Tableau Desktop - Snowflake** (Entra Client App) | Public/native app with localhost redirect URIs for desktop callback |
 
 ### Power BI-Specific
 
@@ -93,8 +93,11 @@ Register a **"Snowflake OAuth Resource"** app in Entra:
 
 4. **Expose an API**:
     - Click **Expose an API** in the left menu
-    - Set **Application ID URI**: `api://<application-id>` (e.g., `api://xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+    - Set **Application ID URI**: `api://<Snowflake_OAuth_Resource_App_ID>` (e.g., `api://xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
     - Click **Add a scope**
+    
+    !!! note "This is the Resource App ID"
+        The Application ID URI uses the **Snowflake OAuth Resource** app's Application (client) ID.
 
 5. **Add Scope** with these values:
 
@@ -166,7 +169,7 @@ Create a single integration that supports both tools:
 ```sql
 -- Description: Create ONE Entra External OAuth integration that supports both Power BI and Tableau.
 -- - Power BI needs the two Power BI connector audiences.
--- - Tableau needs the api://<resource-app> audience (Application ID URI).
+-- - Tableau needs the api://<Snowflake_OAuth_Resource_App_ID> audience (from "Snowflake OAuth Resource" app).
 -- - role-any requires EXTERNAL_OAUTH_ANY_ROLE_MODE = ENABLE.
 -- - Allowed roles list controls which roles may be used at session creation.
 
@@ -191,8 +194,8 @@ CREATE OR REPLACE SECURITY INTEGRATION ENTRA_EXTERNAL_OAUTH
 ```
 
 !!! tip "Replace Placeholders"
-    - `<Your_Tenant_ID>`: Your Azure AD tenant ID (e.g., `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
-    - `<Your_Application_ID>`: Your Entra Resource App's Application ID
+    - `<Your_Tenant_ID>`: Your Azure AD tenant ID (from Entra → Overview)
+    - `<Snowflake_OAuth_Resource_App_ID>`: Application ID from **"Snowflake OAuth Resource"** app (Entra → App registrations)
 
 ### 2.3 Field Reference
 
@@ -243,7 +246,7 @@ Create an XML file that tells Tableau Desktop which IdP, scopes, and redirects t
       <oauthConfigId>custom_sf_entra_role_any</oauthConfigId>
       <!-- Description: Optional user-friendly label shown instead of the raw oauthConfigId -->
       <configLabel>Entra_Role_Any</configLabel>
-      <!-- Tableau Desktop public/native client -->
+      <!-- Tableau Desktop public/native client - from "Tableau Desktop - Snowflake" app -->
       <clientIdDesktop>YOUR_TABLEAU_CLIENT_APP_ID</clientIdDesktop>
       <clientSecretDesktop></clientSecretDesktop>
 
@@ -529,11 +532,11 @@ LIMIT 50;
 
 | Component | Power BI | Tableau |
 |-----------|:--------:|:-------:|
-| Entra Resource App (`api://...`, scope `session:role-any`) | Optional | ✅ Required |
+| **Snowflake OAuth Resource** app (Entra Resource App with `api://...` and `session:role-any` scope) | Optional | ✅ Required |
 | Snowflake `AUDIENCE_LIST` includes Power BI audiences | ✅ Required | ❌ Not needed |
-| Snowflake `AUDIENCE_LIST` includes `api://...` | ❌ Not needed | ✅ Required |
+| Snowflake `AUDIENCE_LIST` includes `api://<Snowflake_OAuth_Resource_App_ID>` | ❌ Not needed | ✅ Required |
 | Tableau OAuth XML in `OAuthConfigs` | ❌ Not needed | ✅ Required |
-| Entra Client App (public/native with redirects) | ❌ Not needed | ✅ Required |
+| **Tableau Desktop - Snowflake** app (Entra Client App with redirect URIs) | ❌ Not needed | ✅ Required |
 
 !!! success "Best Practice"
     Use a **single unified integration** with all audiences included. This simplifies management and ensures both tools work with one configuration.
