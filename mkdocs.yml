@@ -109,6 +109,7 @@ nav:
     - Overview: authentication/overview.md
     - Quick Reference: authentication/quick-reference.md
     - OAuth / Service Principal: authentication/oauth-sso.md
+    - Entra Unified OAuth: authentication/entra-unified-oauth.md
     - Programmatic Tokens: authentication/programmatic-tokens.md
     - Key-Pair Authentication: authentication/key-pair.md
     - Username & Password: authentication/username-password.md
