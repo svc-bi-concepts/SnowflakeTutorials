@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pluginOAuthConfig>
+  <!-- Connector identifier -->
+  <dbclass>snowflake</dbclass>
+  <!-- Must start with custom_ and be <= 36 chars -->
+  <oauthConfigId>custom_sf_entra_role_any</oauthConfigId>
+  <!-- Description: Optional user-friendly label shown instead of the raw oauthConfigId (allowed chars: alphanum, _, -, space). -->
+  <configLabel>Entra_Role_Any</configLabel>
+  <!-- Tableau Desktop public/native client -->
+  <clientIdDesktop>YOUR_TABLEAU_CLIENT_APP_ID</clientIdDesktop>
+  <clientSecretDesktop></clientSecretDesktop>
+
+  <!-- Must match the redirect URIs configured in Entra for the Desktop app registration -->
+  <redirectUrisDesktop>http://localhost:55556/Callback</redirectUrisDesktop>
+  <redirectUrisDesktop>http://localhost:55557/Callback</redirectUrisDesktop>
+  <redirectUrisDesktop>http://localhost:55558/Callback</redirectUrisDesktop>
+  <redirectUrisDesktop>http://localhost:55559/Callback</redirectUrisDesktop>
+  <redirectUrisDesktop>http://localhost:55560/Callback</redirectUrisDesktop>
+
+  <!-- Entra OAuth2 v2 endpoints -->
+  <authUri>https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/authorize</authUri>
+  <tokenUri>https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/token</tokenUri>
+
+  <!-- Scopes: OIDC + refresh + Snowflake resource scope for role-any -->
+  <scopes>openid</scopes>
+  <scopes>profile</scopes>
+  <scopes>email</scopes>
+  <scopes>offline_access</scopes>
+
+  <!-- IMPORTANT: This must match your Entra "Snowflake OAuth Resource" Application ID URI + scope name -->
+  <scopes>api://YOUR_RESOURCE_APP_ID/session:role-any</scopes>
+
+  <capabilities>
+    <!-- PKCE (required/best practice for native apps) -->
+    <entry>
+      <key>OAUTH_CAP_REQUIRE_PKCE</key>
+      <value>true</value>
+    </entry>
+    <entry>
+      <key>OAUTH_CAP_PKCE_REQUIRES_CODE_CHALLENGE_METHOD</key>
+      <value>true</value>
+    </entry>
+
+    <!-- Recommended -->
+    <entry>
+      <key>OAUTH_CAP_SUPPORTS_STATE</key>
+      <value>true</value>
+    </entry>
+    <entry>
+      <key>OAUTH_CAP_CLIENT_SECRET_IN_URL_QUERY_PARAM</key>
+      <value>true</value>
+    </entry>
+    <entry>
+      <key>OAUTH_CAP_REQUIRES_PROMPT_SELECT_ACCOUNT</key>
+      <value>true</value>
+    </entry>
+    <entry>
+      <key>OAUTH_CAP_SUPPORTS_GET_USERINFO_FROM_ID_TOKEN</key>
+      <value>true</value>
+    </entry>
+
+    <!-- Fixed localhost callback ports (must match Entra redirect URIs) -->
+    <entry>
+      <key>OAUTH_CAP_FIXED_PORT_IN_CALLBACK_URL</key>
+      <value>true</value>
+    </entry>
+  </capabilities>
+
+  <!-- Token response mapping -->
+  <accessTokenResponseMaps>
+    <entry>
+      <key>ACCESSTOKEN</key>
+      <value>access_token</value>
+    </entry>
+    <entry>
+      <key>REFRESHTOKEN</key>
+      <value>refresh_token</value>
+    </entry>
+    <entry>
+      <key>access-token-expires-in</key>
+      <value>expires_in</value>
+    </entry>
+    <entry>
+      <key>access-token-issue-time</key>
+      <value>issued_at</value>
+    </entry>
+    <entry>
+      <key>id-token</key>
+      <value>id_token</value>
+    </entry>
+    <entry>
+      <key>username</key>
+      <value>preferred_username</value>
+    </entry>
+  </accessTokenResponseMaps>
+</pluginOAuthConfig>
+

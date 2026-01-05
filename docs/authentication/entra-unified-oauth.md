@@ -38,13 +38,27 @@ flowchart TB
 
 ---
 
+## Entra App Naming Convention
+
+This guide references **two Entra app registrations**. Use consistent naming to avoid confusion:
+
+| App Name | Type | Purpose | Example Name |
+|----------|------|---------|--------------|
+| **Resource App** | API/Backend | Defines the `api://...` audience and `session:role-any` scope | `Snowflake OAuth Resource` |
+| **Tableau Client App** | Public/Native | Desktop client for Tableau with redirect URIs | `Tableau Desktop - Snowflake` |
+
+!!! info "Power BI Does Not Need a Client App"
+    Power BI uses Microsoft's built-in connector, so you don't register a separate client app for it.
+
+---
+
 ## Component Requirements
 
 ### Shared Components (Both Power BI & Tableau)
 
 | Component | Description | Required For |
 |-----------|-------------|--------------|
-| **Entra Resource App** | Application ID URI (`api://...`) + scope (`session:role-any`) | Both |
+| **Snowflake OAuth Resource** (Entra Resource App) | Application ID URI (`api://...`) + scope (`session:role-any`) | Both |
 | **Snowflake Security Integration** | `TYPE=EXTERNAL_OAUTH` pointing to Entra issuer + JWKS keys | Both |
 | **User Mapping** | Entra token claim (`upn`) → Snowflake user attribute (`LOGIN_NAME`) | Both |
 
@@ -167,7 +181,7 @@ CREATE OR REPLACE SECURITY INTEGRATION ENTRA_EXTERNAL_OAUTH
     'https://analysis.windows.net/powerbi/connector/Snowflake',
     'https://analysis.windows.net/powerbi/connector/snowflake',
     -- Tableau audience (your Entra Resource App ID URI)
-    'api://<Your_Application_ID>'
+    'api://<Snowflake_OAuth_Resource_App_ID>'  -- From "Snowflake OAuth Resource" app
   )
   EXTERNAL_OAUTH_TOKEN_USER_MAPPING_CLAIM = 'upn'
   EXTERNAL_OAUTH_SNOWFLAKE_USER_MAPPING_ATTRIBUTE = 'LOGIN_NAME'
@@ -201,7 +215,7 @@ ALTER SECURITY INTEGRATION ENTRA_EXTERNAL_OAUTH
   SET EXTERNAL_OAUTH_AUDIENCE_LIST = (
     'https://analysis.windows.net/powerbi/connector/Snowflake',
     'https://analysis.windows.net/powerbi/connector/snowflake',
-    'api://<Your_Application_ID>'
+    'api://<Snowflake_OAuth_Resource_App_ID>'  -- From "Snowflake OAuth Resource" app
   );
 
 ALTER SECURITY INTEGRATION ENTRA_EXTERNAL_OAUTH
@@ -214,55 +228,147 @@ ALTER SECURITY INTEGRATION ENTRA_EXTERNAL_OAUTH
 
 ### 3.1 OAuth XML Configuration
 
-Create an XML file that tells Tableau Desktop which IdP, scopes, and redirects to use:
+Create an XML file that tells Tableau Desktop which IdP, scopes, and redirects to use.
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<OAuthConfig>
-  <OAuthConfigId>custom_snowflake_entra_oauth</OAuthConfigId>
-  <clientIdDesktop><Your_Tableau_Client_App_ID></clientIdDesktop>
-  <clientSecretDesktop></clientSecretDesktop>
-  <redirectUrisDesktop>
-    http://localhost:55556/Callback,
-    http://localhost:55557/Callback,
-    http://localhost:55558/Callback,
-    http://localhost:55559/Callback,
-    http://localhost:55560/Callback
-  </redirectUrisDesktop>
-  <authUri>https://login.microsoftonline.com/<Your_Tenant_ID>/oauth2/v2.0/authorize</authUri>
-  <tokenUri>https://login.microsoftonline.com/<Your_Tenant_ID>/oauth2/v2.0/token</tokenUri>
-  <scopes>api://<Your_Application_ID>/session:role-any openid profile</scopes>
-  <accessTokenResponseParamName>access_token</accessTokenResponseParamName>
-  <refreshTokenResponseParamName>refresh_token</refreshTokenResponseParamName>
-  <instanceUrlSignInEnabled>false</instanceUrlSignInEnabled>
-  <dbclassOverride>snowflake</dbclassOverride>
-  <userNameAttribute>id_token:upn</userNameAttribute>
-</OAuthConfig>
-```
+[:material-download: Download Template XML](../assets/downloads/snowflake_entra_role_any.xml){ .md-button .md-button--primary }
+
+??? example "View Full XML Configuration"
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <pluginOAuthConfig>
+      <!-- Connector identifier -->
+      <dbclass>snowflake</dbclass>
+      <!-- Must start with custom_ and be <= 36 chars -->
+      <oauthConfigId>custom_sf_entra_role_any</oauthConfigId>
+      <!-- Description: Optional user-friendly label shown instead of the raw oauthConfigId -->
+      <configLabel>Entra_Role_Any</configLabel>
+      <!-- Tableau Desktop public/native client -->
+      <clientIdDesktop>YOUR_TABLEAU_CLIENT_APP_ID</clientIdDesktop>
+      <clientSecretDesktop></clientSecretDesktop>
+
+      <!-- Must match the redirect URIs configured in Entra for the Desktop app registration -->
+      <redirectUrisDesktop>http://localhost:55556/Callback</redirectUrisDesktop>
+      <redirectUrisDesktop>http://localhost:55557/Callback</redirectUrisDesktop>
+      <redirectUrisDesktop>http://localhost:55558/Callback</redirectUrisDesktop>
+      <redirectUrisDesktop>http://localhost:55559/Callback</redirectUrisDesktop>
+      <redirectUrisDesktop>http://localhost:55560/Callback</redirectUrisDesktop>
+
+      <!-- Entra OAuth2 v2 endpoints -->
+      <authUri>https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/authorize</authUri>
+      <tokenUri>https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/token</tokenUri>
+
+      <!-- Scopes: OIDC + refresh + Snowflake resource scope for role-any -->
+      <scopes>openid</scopes>
+      <scopes>profile</scopes>
+      <scopes>email</scopes>
+      <scopes>offline_access</scopes>
+
+      <!-- IMPORTANT: This must match your Entra "Snowflake OAuth Resource" Application ID URI + scope name -->
+      <scopes>api://YOUR_RESOURCE_APP_ID/session:role-any</scopes>
+
+      <capabilities>
+        <!-- PKCE (required/best practice for native apps) -->
+        <entry>
+          <key>OAUTH_CAP_REQUIRE_PKCE</key>
+          <value>true</value>
+        </entry>
+        <entry>
+          <key>OAUTH_CAP_PKCE_REQUIRES_CODE_CHALLENGE_METHOD</key>
+          <value>true</value>
+        </entry>
+
+        <!-- Recommended -->
+        <entry>
+          <key>OAUTH_CAP_SUPPORTS_STATE</key>
+          <value>true</value>
+        </entry>
+        <entry>
+          <key>OAUTH_CAP_CLIENT_SECRET_IN_URL_QUERY_PARAM</key>
+          <value>true</value>
+        </entry>
+        <entry>
+          <key>OAUTH_CAP_REQUIRES_PROMPT_SELECT_ACCOUNT</key>
+          <value>true</value>
+        </entry>
+        <entry>
+          <key>OAUTH_CAP_SUPPORTS_GET_USERINFO_FROM_ID_TOKEN</key>
+          <value>true</value>
+        </entry>
+
+        <!-- Fixed localhost callback ports (must match Entra redirect URIs) -->
+        <entry>
+          <key>OAUTH_CAP_FIXED_PORT_IN_CALLBACK_URL</key>
+          <value>true</value>
+        </entry>
+      </capabilities>
+
+      <!-- Token response mapping -->
+      <accessTokenResponseMaps>
+        <entry>
+          <key>ACCESSTOKEN</key>
+          <value>access_token</value>
+        </entry>
+        <entry>
+          <key>REFRESHTOKEN</key>
+          <value>refresh_token</value>
+        </entry>
+        <entry>
+          <key>access-token-expires-in</key>
+          <value>expires_in</value>
+        </entry>
+        <entry>
+          <key>access-token-issue-time</key>
+          <value>issued_at</value>
+        </entry>
+        <entry>
+          <key>id-token</key>
+          <value>id_token</value>
+        </entry>
+        <entry>
+          <key>username</key>
+          <value>preferred_username</value>
+        </entry>
+      </accessTokenResponseMaps>
+    </pluginOAuthConfig>
+    ```
+
+### 3.2 Configuration Placeholders
+
+Replace these placeholders in the XML file with your actual values:
+
+| Placeholder | Which App? | Where to Find |
+|-------------|------------|---------------|
+| `YOUR_TABLEAU_CLIENT_APP_ID` | **Tableau Desktop - Snowflake** (Client App) | Entra → App registrations → `Tableau Desktop - Snowflake` → Application (client) ID |
+| `YOUR_TENANT_ID` | Your Azure AD Tenant | Entra → Overview → Tenant ID |
+| `YOUR_RESOURCE_APP_ID` | **Snowflake OAuth Resource** (Resource App) | Entra → App registrations → `Snowflake OAuth Resource` → Application (client) ID |
+
+!!! tip "Finding Your IDs"
+    Both apps are in **Entra ID → App registrations**. The Resource App defines the `api://` URI and scope; the Client App is what Tableau uses to authenticate.
 
 !!! note "Public Client Configuration"
-    For public/native clients with PKCE, the `clientSecretDesktop` is typically empty. Keep it blank if your Entra app is configured as a public client (recommended).
+    For public/native clients with PKCE, the `clientSecretDesktop` is empty. This is the recommended configuration for desktop apps.
 
-### 3.2 File Location
+### 3.3 File Location
 
 Place the XML file in the Tableau Repository `OAuthConfigs` folder:
 
 === "macOS"
 
     ```
-    ~/Documents/My Tableau Repository/OAuthConfigs/snowflake_entra_oauth.xml
+    ~/Documents/My Tableau Repository/OAuthConfigs/snowflake_entra_role_any.xml
     ```
 
 === "Windows"
 
     ```
-    C:\Users\<username>\Documents\My Tableau Repository\OAuthConfigs\snowflake_entra_oauth.xml
+    C:\Users\<username>\Documents\My Tableau Repository\OAuthConfigs\snowflake_entra_role_any.xml
     ```
 
 !!! warning "Restart Required"
     Restart Tableau Desktop after placing the file for changes to take effect.
 
-### 3.3 Connecting in Tableau
+### 3.4 Connecting in Tableau
 
 1. Open **Tableau Desktop**
 2. Connect to **Snowflake**
@@ -319,19 +425,34 @@ The `TYPE=OAUTH` integrations (with `OAUTH_CLIENT=TABLEAU_DESKTOP` or `TABLEAU_S
 
 This is a **different mechanism** than External OAuth (where Entra is the OAuth server).
 
+!!! danger "Potential Conflict Warning"
+    Having both `TYPE=OAUTH` (Snowflake OAuth) and `TYPE=EXTERNAL_OAUTH` (Entra External OAuth) enabled **may cause unexpected behavior**:
+    
+    - Users may accidentally select the wrong OAuth flow in Tableau
+    - The Snowflake OAuth flow will show a **blue Snowflake login page** instead of the Entra login
+    - This can lead to confusion and authentication errors
+    
+    **Recommendation**: If you're standardizing on Entra External OAuth, **disable the legacy Snowflake OAuth integrations** to avoid conflicts.
+
 ### Recommendation
 
 | Scenario | Action |
 |----------|--------|
-| Standardizing on Entra External OAuth | Disable or drop legacy Snowflake OAuth integrations later |
-| Mixed environment | Keep both; users choose based on OAuth config selected |
+| Standardizing on Entra External OAuth | **Disable** legacy Snowflake OAuth integrations to avoid conflicts |
+| Mixed environment (not recommended) | Keep both, but users must carefully select the correct OAuth config |
 
 ```sql
--- View existing OAuth integrations
+-- View all existing OAuth integrations
 SHOW SECURITY INTEGRATIONS;
 
--- Disable legacy integration (if no longer needed)
+-- Check which integrations are enabled
+SELECT INTEGRATION_NAME, TYPE, ENABLED 
+FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()))
+WHERE TYPE LIKE '%OAUTH%';
+
+-- Disable legacy Snowflake OAuth integrations to prevent conflicts
 ALTER SECURITY INTEGRATION TABLEAU_DESKTOP_OAUTH SET ENABLED = FALSE;
+ALTER SECURITY INTEGRATION TABLEAU_SERVER_OAUTH SET ENABLED = FALSE;
 ```
 
 ---
@@ -372,7 +493,7 @@ LIMIT 50;
       SET EXTERNAL_OAUTH_AUDIENCE_LIST = (
         'https://analysis.windows.net/powerbi/connector/Snowflake',
         'https://analysis.windows.net/powerbi/connector/snowflake',
-        'api://<Your_Application_ID>'
+        'api://<Snowflake_OAuth_Resource_App_ID>'  -- From "Snowflake OAuth Resource" app
       );
     ```
 
