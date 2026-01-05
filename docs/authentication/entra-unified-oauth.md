@@ -79,7 +79,7 @@ Register a **"Snowflake OAuth Resource"** app in Entra:
 
 4. **Expose an API**:
     - Click **Expose an API** in the left menu
-    - Set **Application ID URI**: `api://<application-id>` (e.g., `api://682bbf6f-db1d-47c6-be84-d40a3019c592`)
+    - Set **Application ID URI**: `api://<application-id>` (e.g., `api://xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
     - Click **Add a scope**
 
 5. **Add Scope** with these values:
@@ -177,7 +177,7 @@ CREATE OR REPLACE SECURITY INTEGRATION ENTRA_EXTERNAL_OAUTH
 ```
 
 !!! tip "Replace Placeholders"
-    - `<Your_Tenant_ID>`: Your Azure AD tenant ID (e.g., `1e24bb68-270d-4a74-b998-f538a48d9d33`)
+    - `<Your_Tenant_ID>`: Your Azure AD tenant ID (e.g., `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
     - `<Your_Application_ID>`: Your Entra Resource App's Application ID
 
 ### 2.3 Field Reference
