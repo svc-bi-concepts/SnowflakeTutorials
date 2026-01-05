@@ -1,7 +1,9 @@
 site_name: Snowflake User Guide
 site_description: Comprehensive guide for connecting BI tools to Snowflake
 site_author: Your Organization
-site_url: https://docs.example.com
+site_url: https://svc-bi-concepts.github.io/SnowflakeTutorials/
+repo_url: https://github.com/svc-bi-concepts/SnowflakeTutorials
+repo_name: svc-bi-concepts/SnowflakeTutorials
 
 theme:
   name: material
@@ -38,8 +40,10 @@ theme:
     - content.code.copy
     - content.code.annotate
   
+  logo: assets/images/BI_Concepts_logo_graphic_color.png
+  favicon: assets/images/favicon.ico
+  
   icon:
-    logo: material/snowflake
     repo: fontawesome/brands/github
 
   custom_dir: docs/overrides
@@ -91,7 +95,7 @@ plugins:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/your-org
+      link: https://github.com/svc-bi-concepts/SnowflakeTutorials
   generator: false
   
   # Matomo Analytics Configuration

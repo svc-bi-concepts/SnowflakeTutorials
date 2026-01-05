@@ -1,0 +1,405 @@
+<!-- Floating Feedback Button -->
+<div class="feedback-container" id="feedback-container">
+  <!-- Collapsed State: Just the button -->
+  <button class="feedback-toggle" id="feedback-toggle" aria-label="Provide feedback">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+      <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+      <path fill="currentColor" d="M12 15l1.57-3.43L17 10l-3.43-1.57L12 5l-1.57 3.43L7 10l3.43 1.57z"/>
+    </svg>
+    <span class="feedback-label">Feedback</span>
+  </button>
+
+  <!-- Expanded State: Feedback Form -->
+  <div class="feedback-panel" id="feedback-panel">
+    <div class="feedback-header">
+      <span>📝 Feedback</span>
+      <div class="feedback-header-actions">
+        <button class="feedback-expand" id="feedback-expand" aria-label="Expand" title="Expand">⤢</button>
+        <button class="feedback-close" id="feedback-close" aria-label="Close">&times;</button>
+      </div>
+    </div>
+    
+    <form id="feedback-form" class="feedback-form">
+      <div class="feedback-type">
+        <label><input type="radio" name="type" value="issue" checked> 🐛 Issue</label>
+        <label><input type="radio" name="type" value="suggestion"> 💡 Idea</label>
+        <label><input type="radio" name="type" value="question"> ❓ Question</label>
+      </div>
+      
+      <!-- Title field -->
+      <input 
+        type="text" 
+        id="feedback-title" 
+        class="feedback-title" 
+        placeholder="Brief title for your feedback..."
+        required
+      >
+      
+      <!-- Text area for feedback details -->
+      <textarea 
+        id="feedback-editor" 
+        class="feedback-editor"
+        placeholder="Describe in detail..."
+        rows="4"
+      ></textarea>
+      
+      <!-- Simple Math CAPTCHA -->
+      <div class="feedback-captcha">
+        <span id="captcha-label"></span>
+        <input type="text" id="captcha-answer" inputmode="numeric" pattern="[0-9]*" required>
+      </div>
+      
+      <button type="submit" class="feedback-submit">Submit via GitHub</button>
+      <p class="feedback-note">Opens pre-filled GitHub issue</p>
+    </form>
+  </div>
+</div>
+
+<style>
+.feedback-container {
+  position: fixed;
+  right: 1rem;
+  bottom: 4rem;
+  z-index: 999;
+  font-family: var(--md-text-font-family);
+  font-size: 0.75rem;
+}
+
+.feedback-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.feedback-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.4);
+}
+
+.feedback-toggle svg {
+  flex-shrink: 0;
+}
+
+.feedback-label {
+  font-weight: 500;
+}
+
+.feedback-panel {
+  display: none !important;
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  width: 280px;
+  min-height: 200px;
+  margin-bottom: 0.5rem;
+  background: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.feedback-panel.active {
+  display: flex !important;
+  animation: slideUp 0.15s ease;
+}
+
+.feedback-panel.expanded {
+  width: 840px;
+  min-height: 600px;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  font-weight: 500;
+  font-size: 0.8rem;
+  cursor: move;
+}
+
+.feedback-header-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.feedback-expand,
+.feedback-close {
+  background: none;
+  border: none;
+  color: var(--md-primary-bg-color);
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.8;
+  padding: 0 0.25rem;
+  line-height: 1;
+}
+
+.feedback-expand:hover,
+.feedback-close:hover {
+  opacity: 1;
+}
+
+.feedback-form {
+  padding: 0.6rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-type {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.feedback-type label {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  cursor: pointer;
+}
+
+.feedback-type input[type="radio"] {
+  margin: 0;
+  width: 12px;
+  height: 12px;
+}
+
+/* Title input */
+.feedback-title {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font-size: 0.8rem;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+.feedback-title:focus {
+  outline: none;
+  border-color: var(--md-primary-fg-color);
+}
+
+.feedback-title::placeholder {
+  color: var(--md-default-fg-color--light);
+  font-weight: normal;
+}
+
+/* Textarea for feedback */
+.feedback-editor {
+  flex: 1;
+  min-height: 80px;
+  padding: 0.5rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  resize: vertical;
+  line-height: 1.4;
+  font-family: inherit;
+  font-size: 0.75rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.feedback-editor:focus {
+  outline: none;
+  border-color: var(--md-primary-fg-color);
+}
+
+.feedback-editor::placeholder {
+  color: var(--md-default-fg-color--light);
+}
+
+.feedback-captcha {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+.feedback-captcha input {
+  width: 45px;
+  padding: 0.3rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.25rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  text-align: center;
+  font-size: 0.75rem;
+  /* Hide spinner arrows */
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.feedback-captcha input::-webkit-outer-spin-button,
+.feedback-captcha input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.feedback-submit {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  border: none;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.feedback-submit:hover {
+  filter: brightness(1.1);
+}
+
+.feedback-note {
+  margin: 0.3rem 0 0;
+  color: var(--md-default-fg-color--light);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .feedback-label { display: none; }
+  .feedback-panel { width: calc(100vw - 2rem); right: 0; }
+  .feedback-panel.expanded { width: calc(100vw - 2rem); }
+}
+</style>
+
+<script>
+(function() {
+  const toggle = document.getElementById('feedback-toggle');
+  const panel = document.getElementById('feedback-panel');
+  const closeBtn = document.getElementById('feedback-close');
+  const expandBtn = document.getElementById('feedback-expand');
+  const form = document.getElementById('feedback-form');
+  const titleInput = document.getElementById('feedback-title');
+  const editor = document.getElementById('feedback-editor');
+  const captchaLabel = document.getElementById('captcha-label');
+  const captchaInput = document.getElementById('captcha-answer');
+  
+  // Generate simple math CAPTCHA
+  let captchaAnswer;
+  function generateCaptcha() {
+    const a = Math.floor(Math.random() * 10) + 1;
+    const b = Math.floor(Math.random() * 10) + 1;
+    captchaAnswer = a + b;
+    captchaLabel.textContent = `${a} + ${b} =`;
+  }
+  generateCaptcha();
+  
+  // Toggle panel
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    panel.classList.toggle('active');
+    if (panel.classList.contains('active')) {
+      generateCaptcha();
+      captchaInput.value = '';
+      titleInput.focus();
+    }
+  });
+  
+  // Expand/collapse
+  expandBtn.addEventListener('click', () => {
+    panel.classList.toggle('expanded');
+    expandBtn.textContent = panel.classList.contains('expanded') ? '⤡' : '⤢';
+  });
+  
+  // Close panel
+  closeBtn.addEventListener('click', () => {
+    panel.classList.remove('active');
+    panel.classList.remove('expanded');
+    expandBtn.textContent = '⤢';
+  });
+  
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.feedback-container')) {
+      panel.classList.remove('active');
+    }
+  });
+  
+  // Handle form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const userTitle = titleInput.value.trim();
+    const text = editor.value.trim();
+    
+    if (!userTitle) {
+      alert('Please provide a title for your feedback.');
+      titleInput.focus();
+      return;
+    }
+    
+    if (text.length < 10) {
+      alert('Please provide more details (at least 10 characters).');
+      editor.focus();
+      return;
+    }
+    
+    // Validate CAPTCHA
+    if (parseInt(captchaInput.value) !== captchaAnswer) {
+      alert('Please solve the math problem correctly.');
+      generateCaptcha();
+      captchaInput.value = '';
+      return;
+    }
+    
+    const type = form.querySelector('input[name="type"]:checked').value;
+    const pageUrl = window.location.href;
+    
+    const typeMap = {
+      'issue': { label: 'bug', prefix: '[Bug]' },
+      'suggestion': { label: 'enhancement', prefix: '[Idea]' },
+      'question': { label: 'question', prefix: '[Question]' }
+    };
+    
+    const { label, prefix } = typeMap[type];
+    
+    // Build issue body
+    let issueBody = `## Page\n${pageUrl}\n\n## Details\n${text}\n\n`;
+    issueBody += `---\n*Submitted via feedback widget*`;
+    
+    const title = encodeURIComponent(`${prefix} ${userTitle}`);
+    const body = encodeURIComponent(issueBody);
+    const issueUrl = `https://github.com/svc-bi-concepts/SnowflakeTutorials/issues/new?title=${title}&body=${body}&labels=${label}`;
+    
+    // Open GitHub issue
+    window.open(issueUrl, '_blank');
+    
+    // Reset form
+    form.reset();
+    panel.classList.remove('active');
+    panel.classList.remove('expanded');
+    expandBtn.textContent = '⤢';
+    generateCaptcha();
+  });
+})();
+</script>
+
