@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block analytics %}
+  <!-- Include Matomo if configured -->
+  {% if config.extra.analytics and config.extra.analytics.provider == "matomo" %}
+    {% include "partials/integrations/analytics/matomo.html" %}
+  {% elif config.extra.analytics and config.extra.analytics.provider == "google" %}
+    <!-- Fall back to built-in Google Analytics -->
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
