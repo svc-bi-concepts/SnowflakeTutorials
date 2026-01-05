@@ -2,7 +2,17 @@
 
 <span class="security-badge security-low">Basic Security</span>
 
-Username and password is the simplest authentication method for connecting BI tools to Snowflake. While easy to set up, it should be used with caution in production environments.
+!!! danger "Not for Production - MFA Required"
+    **Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.** Username and password authentication is **not suitable for production environments** because:
+    
+    - MFA will be required, which breaks automated connections and scheduled refreshes
+    - Credentials stored in connection files pose security risks
+    - No centralized identity management
+    - Does not meet enterprise security standards
+    
+    **Use OAuth/SSO, Key-Pair, or Programmatic Access Tokens for production environments.**
+
+Username and password is the simplest authentication method for connecting BI tools to Snowflake. **This method should only be used for test/development accounts**, not production environments.
 
 ## Overview
 

@@ -184,3 +184,213 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ==========================================================================
+   MERMAID DIAGRAM STYLING
+   ========================================================================== */
+
+/* Container styling */
+.mermaid {
+  background: transparent !important;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+/* --- FLOWCHART NODES --- */
+
+/* Default node styling - rounded rectangles */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node ellipse,
+.mermaid .node path {
+  rx: 12px !important;
+  ry: 12px !important;
+}
+
+/* Diamond/decision nodes - round the corners */
+.mermaid .node polygon {
+  rx: 8px !important;
+  ry: 8px !important;
+}
+
+/* Alternative: Transform diamonds to rounded rectangles via clip-path */
+.mermaid .node.rhombus polygon,
+.mermaid .node.decision polygon {
+  rx: 10px !important;
+  ry: 10px !important;
+}
+
+/* Flowchart nodes */
+.mermaid .flowchart-link {
+  stroke-width: 2px !important;
+}
+
+/* Node text */
+.mermaid .nodeLabel {
+  font-family: var(--md-text-font-family) !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+}
+
+/* --- SUBGRAPHS --- */
+.mermaid .cluster rect {
+  rx: 16px !important;
+  ry: 16px !important;
+  stroke-width: 2px !important;
+}
+
+.mermaid .cluster-label {
+  font-family: var(--md-text-font-family) !important;
+  font-weight: 600 !important;
+}
+
+/* --- SEQUENCE DIAGRAMS --- */
+
+/* Participant boxes */
+.mermaid .actor {
+  rx: 8px !important;
+  ry: 8px !important;
+}
+
+/* Activation boxes */
+.mermaid .activation0,
+.mermaid .activation1,
+.mermaid .activation2 {
+  rx: 4px !important;
+  ry: 4px !important;
+}
+
+/* Note boxes */
+.mermaid .note {
+  rx: 8px !important;
+  ry: 8px !important;
+}
+
+/* --- EDGES/ARROWS --- */
+
+/* Smoother edges */
+.mermaid .edgePath path {
+  stroke-width: 2px !important;
+}
+
+/* Arrow markers */
+.mermaid marker path {
+  fill: var(--md-default-fg-color--light) !important;
+}
+
+/* --- DARK MODE STYLING --- */
+[data-md-color-scheme="slate"] .mermaid {
+  /* Node colors for dark mode */
+  --mermaid-node-bg: rgba(103, 58, 183, 0.15);
+  --mermaid-node-border: #7c4dff;
+  --mermaid-node-text: #e0e0e0;
+  --mermaid-edge: rgba(255, 255, 255, 0.5);
+  --mermaid-subgraph-bg: rgba(255, 255, 255, 0.03);
+  --mermaid-subgraph-border: rgba(255, 255, 255, 0.15);
+}
+
+[data-md-color-scheme="slate"] .mermaid .node rect {
+  fill: var(--mermaid-node-bg) !important;
+  stroke: var(--mermaid-node-border) !important;
+  stroke-width: 2px !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .nodeLabel {
+  color: var(--mermaid-node-text) !important;
+  fill: var(--mermaid-node-text) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .edgePath path {
+  stroke: var(--mermaid-edge) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .edgeLabel {
+  background-color: var(--md-default-bg-color) !important;
+  color: var(--md-default-fg-color--light) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .cluster rect {
+  fill: var(--mermaid-subgraph-bg) !important;
+  stroke: var(--mermaid-subgraph-border) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .cluster-label {
+  color: var(--md-default-fg-color) !important;
+  fill: var(--md-default-fg-color) !important;
+}
+
+/* Sequence diagram dark mode */
+[data-md-color-scheme="slate"] .mermaid .actor {
+  fill: var(--mermaid-node-bg) !important;
+  stroke: var(--mermaid-node-border) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .actor-line {
+  stroke: var(--mermaid-edge) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid text.actor {
+  fill: var(--mermaid-node-text) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .messageLine0,
+[data-md-color-scheme="slate"] .mermaid .messageLine1 {
+  stroke: var(--mermaid-edge) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .messageText {
+  fill: var(--md-default-fg-color--light) !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .note {
+  fill: rgba(0, 188, 212, 0.1) !important;
+  stroke: #00bcd4 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .noteText {
+  fill: var(--md-default-fg-color) !important;
+}
+
+/* --- LIGHT MODE STYLING --- */
+[data-md-color-scheme="default"] .mermaid {
+  --mermaid-node-bg: rgba(103, 58, 183, 0.08);
+  --mermaid-node-border: #673ab7;
+  --mermaid-node-text: #37474f;
+  --mermaid-edge: rgba(0, 0, 0, 0.4);
+  --mermaid-subgraph-bg: rgba(0, 0, 0, 0.02);
+  --mermaid-subgraph-border: rgba(0, 0, 0, 0.1);
+}
+
+[data-md-color-scheme="default"] .mermaid .node rect {
+  fill: var(--mermaid-node-bg) !important;
+  stroke: var(--mermaid-node-border) !important;
+  stroke-width: 2px !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .nodeLabel {
+  color: var(--mermaid-node-text) !important;
+  fill: var(--mermaid-node-text) !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .edgePath path {
+  stroke: var(--mermaid-edge) !important;
+}
+
+[data-md-color-scheme="default"] .mermaid .cluster rect {
+  fill: var(--mermaid-subgraph-bg) !important;
+  stroke: var(--mermaid-subgraph-border) !important;
+}
+
+/* --- SPECIAL NODE STYLES --- */
+
+/* Decision diamond styling */
+.mermaid .node polygon {
+  rx: 0 !important;
+  ry: 0 !important;
+}
+
+/* Stadium/pill shaped nodes (for start/end) */
+.mermaid .node.stadium rect {
+  rx: 50px !important;
+  ry: 50px !important;
+}
+

@@ -2391,7 +2391,17 @@
 <div class="tabbed-block">
 <h3 id="basic-authentication">Basic Authentication</h3>
 <p><span class="security-badge security-low">Basic Security</span></p>
-<p>The simplest method - enter your Snowflake credentials directly.</p>
+<div class="admonition danger">
+<p class="admonition-title">Not for Production - MFA Required</p>
+<p><strong>Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.</strong> Username and password authentication is <strong>not suitable for production environments</strong> because:</p>
+<ul>
+<li>MFA will be required, which breaks automated connections and scheduled refreshes</li>
+<li>Credentials stored in connection files pose security risks</li>
+<li>No centralized identity management</li>
+</ul>
+<p><strong>Use OAuth/SSO or Key-Pair Authentication for production environments.</strong></p>
+</div>
+<p>The simplest method - enter your Snowflake credentials directly. <strong>Only use for test/development accounts.</strong></p>
 <p><strong>Configuration:</strong></p>
 <table>
 <thead>
@@ -2648,11 +2658,11 @@
 </table>
 <h3 id="choosing-connection-type">Choosing Connection Type</h3>
 <pre class="mermaid"><code>graph TD
-    A[Start] --&gt; B{Real-time data needed?}
-    B --&gt;|Yes| C{Large dataset?}
-    B --&gt;|No| D[Use Extract]
-    C --&gt;|Yes| E{Snowflake optimized?}
-    C --&gt;|No| F[Use Live Connection]
+    A([Start]) --&gt; B{{Real-time data needed?}}
+    B --&gt;|Yes| C{{Large dataset?}}
+    B --&gt;|No| D(Use Extract)
+    C --&gt;|Yes| E{{Snowflake optimized?}}
+    C --&gt;|No| F(Use Live Connection)
     E --&gt;|Yes| F
     E --&gt;|No| D</code></pre>
 <hr>
@@ -3264,6 +3274,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mermaid-config.js"></script>
       
     
   

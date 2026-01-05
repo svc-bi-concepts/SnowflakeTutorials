@@ -51,6 +51,9 @@ theme:
 extra_css:
   - stylesheets/extra.css
 
+extra_javascript:
+  - javascripts/mermaid-config.js
+
 markdown_extensions:
   - admonition
   - pymdownx.details

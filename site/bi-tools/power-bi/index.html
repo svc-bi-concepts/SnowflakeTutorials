@@ -2650,7 +2650,21 @@
 <div class="tabbed-block">
 <h3 id="database-authentication">Database Authentication</h3>
 <p><span class="security-badge security-low">Basic Security</span></p>
+<div class="admonition danger">
+<p class="admonition-title">Not for Production - MFA Required</p>
+<p><strong>Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.</strong> Username and password authentication is <strong>not suitable for production environments</strong> because:</p>
+<ul>
+<li>MFA will be required, which breaks automated connections and scheduled refreshes</li>
+<li>Credentials stored in connection files pose security risks</li>
+<li>No centralized identity management</li>
+</ul>
+<p><strong>Use OAuth/SSO or Programmatic Access Tokens for production environments.</strong></p>
+</div>
 <p><strong>Configuration:</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Test/Development Only</p>
+<p>This method should only be used for test/development accounts, not production.</p>
+</div>
 <ol>
 <li>In authentication dialog, select <strong>Database</strong></li>
 <li>Enter:<ul>
@@ -2833,8 +2847,8 @@
 <h3 id="import-mode">Import Mode</h3>
 <p>Data is loaded into Power BI's in-memory engine.</p>
 <pre class="mermaid"><code>graph LR
-    A[Snowflake] --&gt;|Scheduled Refresh| B[Power BI Dataset]
-    B --&gt; C[Reports/Dashboards]
+    A(Snowflake) --&gt;|Scheduled Refresh| B(Power BI Dataset)
+    B --&gt; C(Reports/Dashboards)
     style B fill:#f9f,stroke:#333</code></pre>
 <div class="pros-cons-grid">
 <div class="pros-box">
@@ -2861,7 +2875,7 @@
 <h3 id="directquery-mode">DirectQuery Mode</h3>
 <p>Queries are sent to Snowflake in real-time.</p>
 <pre class="mermaid"><code>graph LR
-    A[Report View] --&gt;|Query| B[Snowflake]
+    A(Report View) --&gt;|Query| B(Snowflake)
     B --&gt;|Results| A
     style B fill:#9cf,stroke:#333</code></pre>
 <div class="pros-cons-grid">
@@ -3550,6 +3564,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mermaid-config.js"></script>
       
     
   

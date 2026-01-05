@@ -93,7 +93,10 @@ For applications requiring JDBC:
 
 ### Username & Password
 
-No additional configuration needed. Enter credentials when connecting.
+!!! danger "Not for Production - MFA Required"
+    **Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.** Username and password authentication is **not suitable for production environments** because MFA will break automated connections and scheduled refreshes. Use OAuth/SSO or Key-Pair Authentication for production.
+
+No additional configuration needed. Enter credentials when connecting. **Only use for test/development accounts.**
 
 ### OAuth / SSO
 

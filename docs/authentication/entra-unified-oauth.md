@@ -14,18 +14,18 @@ This guide documents a **single, unified Microsoft Entra ID (Azure AD) External 
 ```mermaid
 flowchart TB
     subgraph Entra["Microsoft Entra ID"]
-        ResourceApp["Resource App<br/>(api://...)"]
-        TableauClient["Tableau Client App<br/>(Public/Native)"]
+        ResourceApp("Resource App<br/>(api://...)")
+        TableauClient("Tableau Client App<br/>(Public/Native)")
     end
     
     subgraph Clients["BI Clients"]
-        PowerBI["Power BI"]
-        Tableau["Tableau Desktop"]
+        PowerBI("Power BI")
+        Tableau("Tableau Desktop")
     end
     
     subgraph Snowflake["Snowflake"]
-        Integration["ENTRA_EXTERNAL_OAUTH<br/>Security Integration"]
-        Session["Authorized Session"]
+        Integration("ENTRA_EXTERNAL_OAUTH<br/>Security Integration")
+        Session("Authorized Session")
     end
     
     PowerBI -->|"Token (PBI audiences)"| Entra

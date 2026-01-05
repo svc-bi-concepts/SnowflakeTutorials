@@ -10,38 +10,41 @@ Quick decision guide for selecting the right authentication method
 
 ```mermaid
 graph TD
-    A[Start] --> B{Environment?}
-    B -->|Development/Testing| C[Username/Password]
-    B -->|Production| D{User Type?}
-    D -->|Interactive Users| E{Have IdP?}
-    D -->|Service Account/Automation| F[Key-Pair]
-    E -->|Yes| G[OAuth/SSO]
-    E -->|No| H{Can Setup IdP?}
+    A([Start]) --> B{{Environment?}}
+    B -->|Development/Testing| C(Username/Password)
+    B -->|Production| D{{User Type?}}
+    D -->|Interactive Users| E{{Have IdP?}}
+    D -->|Service Account/Automation| F(Key-Pair)
+    E -->|Yes| G(OAuth/SSO)
+    E -->|No| H{{Can Setup IdP?}}
     H -->|Yes| G
-    H -->|No| I{High Security Required?}
+    H -->|No| I{{High Security Required?}}
     I -->|Yes| F
     I -->|No| C
-    G --> J{Power BI?}
-    J -->|Yes| K[OAuth with Azure AD]
-    J -->|No| L[OAuth with Any IdP]
-    F --> M{Power BI?}
-    M -->|Yes| N[Use OAuth Instead]
-    M -->|No| O[Key-Pair Works]
+    G --> J{{Power BI?}}
+    J -->|Yes| K(OAuth with Azure AD)
+    J -->|No| L(OAuth with Any IdP)
+    F --> M{{Power BI?}}
+    M -->|Yes| N(Use OAuth Instead)
+    M -->|No| O(Key-Pair Works)
 ```
 
 ---
 
 ## Quick Comparison Table
 
+!!! danger "Username/Password: Not for Production"
+    **Snowflake is requiring MFA for all accounts.** Username/Password authentication is **not suitable for production** because MFA will break automated connections and scheduled refreshes.
+
 | Factor | Username/Password | OAuth/SSO | Key-Pair |
 |--------|:-----------------:|:--------:|:--------:|
 | **Setup Time** | Minutes | Days/Weeks | Hours |
 | **Security Level** | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **MFA Support** | ⚠️ Limited | ✅ Full | N/A |
-| **Automation** | ⚠️ MFA Issues | ⚠️ Token Expiry | ✅ Perfect |
+| **MFA Support** | ⚠️ **Required (breaks automation)** | ✅ Full | N/A |
+| **Automation** | ❌ **MFA breaks scheduled refreshes** | ⚠️ Token Expiry | ✅ Perfect |
 | **Tool Support** | ✅ All | ⚠️ Most | ⚠️ Limited |
 | **Maintenance** | Low | Medium | Medium |
-| **Best For** | Dev/Testing | Enterprise Users | Service Accounts |
+| **Best For** | ⚠️ **Dev/Testing ONLY** | Enterprise Users | Service Accounts |
 
 ---
 
@@ -51,10 +54,13 @@ graph TD
 
 | Environment | Recommended Method | Alternative |
 |-------------|-------------------|-------------|
-| **Development** | Username/Password | Key-Pair |
+| **Development** | ⚠️ Username/Password (test only) | Key-Pair |
 | **Staging** | OAuth/SSO | Key-Pair |
 | **Production - Users** | OAuth/SSO | - |
 | **Production - Automation** | Key-Pair | - |
+
+!!! warning "Production Environments"
+    **Do not use Username/Password in production.** Snowflake requires MFA, which will break automated connections and scheduled refreshes.
 
 ### By User Type
 

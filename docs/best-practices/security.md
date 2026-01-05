@@ -54,10 +54,20 @@ GRANT ROLE bi_analyst_role TO USER john_doe;
 
 | Environment | Recommended Method | Why |
 |-------------|-------------------|-----|
-| **Development** | Username/Password | Simplicity for testing |
+| **Development** | ⚠️ Username/Password (test only) | Simplicity for testing - **not for production** |
 | **Production - Users** | OAuth/SSO | Enterprise security, MFA |
 | **Production - Service** | Key-Pair | Automation, no passwords |
 | **Highly Regulated** | Key-Pair + Network Policy | Maximum security |
+
+!!! danger "Username/Password: Production Use Prohibited"
+    **Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.** Username/Password authentication is **not suitable for production environments** because:
+    
+    - MFA will be required, which breaks automated connections and scheduled refreshes
+    - Credentials stored in connection files pose security risks
+    - No centralized identity management
+    - Does not meet enterprise security standards
+    
+    **Use OAuth/SSO or Key-Pair Authentication for all production environments.**
 
 ### OAuth/SSO Configuration
 

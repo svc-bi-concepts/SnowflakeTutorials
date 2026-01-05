@@ -2229,18 +2229,18 @@
 <h2 id="architecture-overview">Architecture Overview</h2>
 <pre class="mermaid"><code>flowchart TB
     subgraph Entra["Microsoft Entra ID"]
-        ResourceApp["Resource App&lt;br/&gt;(api://...)"]
-        TableauClient["Tableau Client App&lt;br/&gt;(Public/Native)"]
+        ResourceApp("Resource App&lt;br/&gt;(api://...)")
+        TableauClient("Tableau Client App&lt;br/&gt;(Public/Native)")
     end
 
     subgraph Clients["BI Clients"]
-        PowerBI["Power BI"]
-        Tableau["Tableau Desktop"]
+        PowerBI("Power BI")
+        Tableau("Tableau Desktop")
     end
 
     subgraph Snowflake["Snowflake"]
-        Integration["ENTRA_EXTERNAL_OAUTH&lt;br/&gt;Security Integration"]
-        Session["Authorized Session"]
+        Integration("ENTRA_EXTERNAL_OAUTH&lt;br/&gt;Security Integration")
+        Session("Authorized Session")
     end
 
     PowerBI --&gt;|"Token (PBI audiences)"| Entra
@@ -3378,6 +3378,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mermaid-config.js"></script>
       
     
   

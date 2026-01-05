@@ -23,11 +23,11 @@ Excel connects to Snowflake through ODBC (Open Database Connectivity), allowing 
 | **Power Query** | :white_check_mark: Full | :warning: Limited |
 | **Pivot Tables** | :white_check_mark: Full | :white_check_mark: Full |
 | **Refresh Data** | :white_check_mark: Full | :white_check_mark: Full |
-| **OAuth Support** | :x: No | :x: No |
+| **OAuth Support** | :white_check_mark: Via ODBC | :x: No |
 | **Key-Pair Auth** | :white_check_mark: Via ODBC | :white_check_mark: Via ODBC |
 
-!!! warning "No OAuth Support"
-    Excel ODBC connections do not support OAuth. Use Username/Password or Key-Pair authentication.
+!!! success "OAuth Now Supported on Windows"
+    Excel on Windows supports OAuth via ODBC using Snowflake's built-in `LOCAL_APPLICATION` integration. See the [OAuth via ODBC](#oauth-via-odbc-windows) section below.
 
 ---
 
@@ -179,38 +179,112 @@ DSN=Snowflake;UID=your_username;PWD=your_password
 
 ## Authentication Methods
 
-=== "Username & Password"
+=== "OAuth via ODBC (Windows)"
 
-    ### Basic Authentication
+    ### Snowflake OAuth with LOCAL_APPLICATION
     
-    <span class="security-badge security-low">Basic Security</span>
+    <span class="security-badge security-high">High Security</span>
     
-    **DSN Configuration:**
+    Use Snowflake's built-in OAuth integration for secure, browser-based authentication on Windows.
     
-    Leave `Authenticator` field blank in DSN setup.
+    !!! success "Recommended for Interactive Users"
+        This method leverages Snowflake's native OAuth and opens a browser for secure sign-in. Ideal for interactive Excel users who want SSO without storing passwords.
     
-    **Connection String:**
+    **Prerequisites:**
     
+    - Snowflake ODBC Driver installed (64-bit)
+    - Network access to your Snowflake account URL
+    
+    ---
+    
+    #### Step 1: Enable Snowflake Local Application OAuth
+    
+    Verify the built-in OAuth integration is enabled in Snowflake:
+    
+    ```sql
+    -- Description: Confirm the built-in OAuth integration for local applications is enabled.
+    DESC SECURITY INTEGRATION "SNOWFLAKE$LOCAL_APPLICATION";
     ```
-    Driver={SnowflakeDSIIDriver};
-    Server=account.snowflakecomputing.com;
-    Database=ANALYTICS;
-    UID=your_username;
-    PWD=your_password;
+    
+    If `ENABLED` is not `true`, enable it:
+    
+    ```sql
+    -- Description: Enable Snowflake's built-in OAuth integration used by ODBC local OAuth flows.
+    USE ROLE SECURITYADMIN;
+    
+    ALTER SECURITY INTEGRATION "SNOWFLAKE$LOCAL_APPLICATION"
+      SET ENABLED = TRUE;
     ```
+    
+    ---
+    
+    #### Step 2: Create Windows System DSN
+    
+    1. Open **ODBC Data Sources (64-bit)** from the Start Menu
+    2. Go to **System DSN** → **Add** (or **Configure** existing)
+    3. Choose the **Snowflake ODBC Driver**
+    4. Configure the **Main** section:
+    
+    | Field | Value |
+    |-------|-------|
+    | **User** | Your Snowflake user (e.g., `your.email@company.com`) |
+    | **Server** | `<your-account>.snowflakecomputing.com` |
+    | **Authenticator** | `oauth_authorization_code` |
+    | **Password** | *Leave empty* |
+    | **Warehouse** | *(Optional)* Your warehouse name |
+    | **Role** | *(Optional)* Leave empty — role is driven by scope |
+    
+    5. Configure the **OAuth** section:
+    
+    | Field | Value |
+    |-------|-------|
+    | **Client Id** | `LOCAL_APPLICATION` |
+    | **Client Secret** | `LOCAL_APPLICATION` |
+    | **Scope** | `session:role:PUBLIC` (or `session:role:<ROLE_NAME>`) |
+    | **Authorization URL** | `https://<your-account>.snowflakecomputing.com/oauth/authorize` |
+    | **Token Request URL** | `https://<your-account>.snowflakecomputing.com/oauth/token-request` |
+    | **Redirect URI** | *Leave empty* (unless required by driver UI) |
+    
+    6. Click **Test...**
+    7. A browser window opens → complete sign-in → DSN test succeeds
+    
+    ---
+    
+    #### Step 3: Connect from Excel
+    
+    1. Open **Excel**
+    2. Go to **Data** → **Get Data** → **From Other Sources** → **From ODBC**
+    3. Select your OAuth-configured DSN
+    4. Click **OK**
+    5. Browser opens for authentication → sign in
+    6. Select tables/views → **Load**
+    
+    ---
+    
+    #### OAuth Scope Reference
+    
+    | Scope | Description |
+    |-------|-------------|
+    | `session:role:PUBLIC` | Use the PUBLIC role (good for initial testing) |
+    | `session:role:<ROLE_NAME>` | Use a specific role (e.g., `session:role:ANALYST_ROLE`) |
+    
+    !!! tip "Least Privilege"
+        For production, create a dedicated Snowflake role for Excel users and set the scope to `session:role:<EXCEL_ROLE>`.
     
     <div class="pros-cons-grid" markdown>
     <div class="pros-box" markdown>
     #### Pros
-    - Simple setup
-    - Works on all platforms
-    - Familiar workflow
+    - No password stored in DSN
+    - Leverages Snowflake OAuth
+    - Browser-based secure sign-in
+    - Works with corporate SSO (if configured)
     </div>
     <div class="cons-box" markdown>
     #### Cons
-    - Password stored in connection
-    - Less secure
-    - MFA not supported
+    - Windows only
+    - Requires browser interaction
+    - Not suitable for unattended refresh
+    - Initial setup complexity
     </div>
     </div>
 
@@ -286,6 +360,45 @@ DSN=Snowflake;UID=your_username;PWD=your_password
         - Scheduled refreshes
         - Background data updates
         - Automated processes
+
+=== "Username & Password"
+
+    ### Basic Authentication
+    
+    <span class="security-badge security-low">Basic Security</span>
+    
+    !!! warning "For Test Accounts Only"
+        This method is recommended only for test/development accounts. Use OAuth, Key-Pair, or SSO for production environments.
+    
+    **DSN Configuration:**
+    
+    Leave `Authenticator` field blank in DSN setup.
+    
+    **Connection String:**
+    
+    ```
+    Driver={SnowflakeDSIIDriver};
+    Server=account.snowflakecomputing.com;
+    Database=ANALYTICS;
+    UID=your_username;
+    PWD=your_password;
+    ```
+    
+    <div class="pros-cons-grid" markdown>
+    <div class="pros-box" markdown>
+    #### Pros
+    - Simple setup
+    - Works on all platforms
+    - Familiar workflow
+    </div>
+    <div class="cons-box" markdown>
+    #### Cons
+    - Password stored in connection
+    - Less secure
+    - MFA not supported
+    - Not recommended for production
+    </div>
+    </div>
 
 ---
 
@@ -459,6 +572,29 @@ in
     3. Verify Snowflake user not locked
     4. Test connection manually first
 
+??? question "OAuth: Browser doesn't open or test fails"
+    **Solutions:**
+    
+    1. Verify `SNOWFLAKE$LOCAL_APPLICATION` integration is enabled:
+    ```sql
+    DESC SECURITY INTEGRATION "SNOWFLAKE$LOCAL_APPLICATION";
+    ```
+    2. Check `Authenticator` is set to `oauth_authorization_code`
+    3. Verify `Client Id` and `Client Secret` are both set to `LOCAL_APPLICATION`
+    4. Ensure Authorization and Token URLs use your exact account identifier
+    5. Check firewall allows browser to reach Snowflake
+
+??? question "OAuth: Error 'Invalid scope' or 'Role not found'"
+    **Solutions:**
+    
+    1. Verify the role in your scope exists in Snowflake
+    2. Ensure your user has been granted the role:
+    ```sql
+    SHOW GRANTS TO USER your_username;
+    ```
+    3. Try `session:role:PUBLIC` for initial testing
+    4. Check for typos in the scope string (case-sensitive role name)
+
 ---
 
 ## Quick Reference
@@ -475,8 +611,19 @@ in
 | `Schema` | Default schema | `PUBLIC` |
 | `Warehouse` | Compute warehouse | `COMPUTE_WH` |
 | `Role` | Snowflake role | `ANALYST` |
-| `Authenticator` | Auth method | `SNOWFLAKE_JWT` |
+| `Authenticator` | Auth method | `SNOWFLAKE_JWT`, `oauth_authorization_code`, `externalbrowser` |
 | `PRIV_KEY_FILE` | Private key path | `C:\keys\rsa.p8` |
+
+### OAuth DSN Parameters (Windows)
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `Authenticator` | `oauth_authorization_code` | Enables OAuth flow |
+| `Client Id` | `LOCAL_APPLICATION` | Snowflake's built-in OAuth client |
+| `Client Secret` | `LOCAL_APPLICATION` | Same as Client Id |
+| `Scope` | `session:role:<ROLE>` | Role scope (e.g., `session:role:PUBLIC`) |
+| `Authorization URL` | `https://<account>.snowflakecomputing.com/oauth/authorize` | OAuth authorize endpoint |
+| `Token Request URL` | `https://<account>.snowflakecomputing.com/oauth/token-request` | OAuth token endpoint |
 
 ### File Locations
 

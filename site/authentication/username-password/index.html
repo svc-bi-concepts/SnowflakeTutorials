@@ -1832,7 +1832,18 @@
 
 <h1 id="username-password-authentication">Username &amp; Password Authentication</h1>
 <p><span class="security-badge security-low">Basic Security</span></p>
-<p>Username and password is the simplest authentication method for connecting BI tools to Snowflake. While easy to set up, it should be used with caution in production environments.</p>
+<div class="admonition danger">
+<p class="admonition-title">Not for Production - MFA Required</p>
+<p><strong>Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.</strong> Username and password authentication is <strong>not suitable for production environments</strong> because:</p>
+<ul>
+<li>MFA will be required, which breaks automated connections and scheduled refreshes</li>
+<li>Credentials stored in connection files pose security risks</li>
+<li>No centralized identity management</li>
+<li>Does not meet enterprise security standards</li>
+</ul>
+<p><strong>Use OAuth/SSO, Key-Pair, or Programmatic Access Tokens for production environments.</strong></p>
+</div>
+<p>Username and password is the simplest authentication method for connecting BI tools to Snowflake. <strong>This method should only be used for test/development accounts</strong>, not production environments.</p>
 <h2 id="overview">Overview</h2>
 <pre class="mermaid"><code>sequenceDiagram
     participant User
@@ -2678,6 +2689,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mermaid-config.js"></script>
       
     
   

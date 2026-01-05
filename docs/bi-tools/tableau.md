@@ -54,7 +54,16 @@ Tableau provides native Snowflake integration with support for all major authent
     
     <span class="security-badge security-low">Basic Security</span>
     
-    The simplest method - enter your Snowflake credentials directly.
+    !!! danger "Not for Production - MFA Required"
+        **Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.** Username and password authentication is **not suitable for production environments** because:
+        
+        - MFA will be required, which breaks automated connections and scheduled refreshes
+        - Credentials stored in connection files pose security risks
+        - No centralized identity management
+        
+        **Use OAuth/SSO or Key-Pair Authentication for production environments.**
+    
+    The simplest method - enter your Snowflake credentials directly. **Only use for test/development accounts.**
     
     **Configuration:**
     
@@ -253,11 +262,11 @@ Tableau provides native Snowflake integration with support for all major authent
 
 ```mermaid
 graph TD
-    A[Start] --> B{Real-time data needed?}
-    B -->|Yes| C{Large dataset?}
-    B -->|No| D[Use Extract]
-    C -->|Yes| E{Snowflake optimized?}
-    C -->|No| F[Use Live Connection]
+    A([Start]) --> B{{Real-time data needed?}}
+    B -->|Yes| C{{Large dataset?}}
+    B -->|No| D(Use Extract)
+    C -->|Yes| E{{Snowflake optimized?}}
+    C -->|No| F(Use Live Connection)
     E -->|Yes| F
     E -->|No| D
 ```

@@ -48,11 +48,11 @@ Snowflake supports multiple authentication methods, each with different security
 
 ```mermaid
 graph LR
-    A[User/Application] --> B{Authentication Method}
-    B --> C[Username & Password]
-    B --> D[OAuth / SSO]
-    B --> E[Key-Pair]
-    C --> F[Snowflake]
+    A(User/Application) --> B{{Authentication Method}}
+    B --> C(Username & Password)
+    B --> D(OAuth / SSO)
+    B --> E(Key-Pair)
+    C --> F(Snowflake)
     D --> F
     E --> F
 ```

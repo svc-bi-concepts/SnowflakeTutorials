@@ -148,8 +148,15 @@ Interactive authentication through your IdP for human users with MFA support.
 
 The simplest authentication method using Snowflake credentials directly.
 
-!!! warning "Deprecation Notice"
-    Snowflake is **sunsetting hardcoded username/password** for service accounts. Plan migration to OAuth, PATs, or Key-Pair authentication.
+!!! danger "Not for Production - MFA Required"
+    **Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.** Username and password authentication is **not suitable for production environments** because:
+    
+    - MFA will be required, which breaks automated connections and scheduled refreshes
+    - Credentials stored in connection files pose security risks
+    - No centralized identity management
+    - Does not meet enterprise security standards
+    
+    **Use OAuth/SSO, Key-Pair, or Programmatic Access Tokens for production environments.**
 
 <div class="pros-cons-grid" markdown>
 <div class="pros-box" markdown>

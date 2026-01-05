@@ -46,7 +46,7 @@ A comprehensive guide for authenticating Tableau, Power BI, and Excel with Snowf
 
 | Method | Security Level | Complexity | Best For |
 |--------|---------------|------------|----------|
-| **Username & Password** | :material-shield-outline: Basic | :material-star: Easy | Quick testing, individual users |
+| **Username & Password** | :material-shield-outline: Basic | :material-star: Easy | ⚠️ Test/development only - MFA required |
 | **OAuth / SSO** | :material-shield-check: High | :material-star::material-star: Medium | Enterprise environments |
 | **Key-Pair Authentication** | :material-shield-lock: Very High | :material-star::material-star::material-star: Complex | Service accounts, automation |
 
@@ -74,8 +74,8 @@ A comprehensive guide for authenticating Tableau, Power BI, and Excel with Snowf
 
 ---
 
-!!! tip "Recommendation"
-    For enterprise environments, we strongly recommend using **OAuth/SSO** or **Key-Pair Authentication** over basic username and password for enhanced security.
+!!! danger "Important: Username & Password Not for Production"
+    **Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.** Username and password authentication is **not suitable for production environments** because MFA will break automated connections and scheduled refreshes. Use **OAuth/SSO** or **Key-Pair Authentication** for production.
 
 ---
 

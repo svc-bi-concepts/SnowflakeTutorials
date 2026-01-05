@@ -69,7 +69,19 @@ Select authentication method and enter credentials.
     
     <span class="security-badge security-low">Basic Security</span>
     
+    !!! danger "Not for Production - MFA Required"
+        **Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.** Username and password authentication is **not suitable for production environments** because:
+        
+        - MFA will be required, which breaks automated connections and scheduled refreshes
+        - Credentials stored in connection files pose security risks
+        - No centralized identity management
+        
+        **Use OAuth/SSO or Programmatic Access Tokens for production environments.**
+    
     **Configuration:**
+    
+    !!! warning "Test/Development Only"
+        This method should only be used for test/development accounts, not production.
     
     1. In authentication dialog, select **Database**
     2. Enter:
@@ -241,8 +253,8 @@ Data is loaded into Power BI's in-memory engine.
 
 ```mermaid
 graph LR
-    A[Snowflake] -->|Scheduled Refresh| B[Power BI Dataset]
-    B --> C[Reports/Dashboards]
+    A(Snowflake) -->|Scheduled Refresh| B(Power BI Dataset)
+    B --> C(Reports/Dashboards)
     style B fill:#f9f,stroke:#333
 ```
 
@@ -271,7 +283,7 @@ Queries are sent to Snowflake in real-time.
 
 ```mermaid
 graph LR
-    A[Report View] -->|Query| B[Snowflake]
+    A(Report View) -->|Query| B(Snowflake)
     B -->|Results| A
     style B fill:#9cf,stroke:#333
 ```
