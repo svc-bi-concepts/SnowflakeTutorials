@@ -257,5 +257,5 @@ Answer these questions:
 
 - **[Authentication Overview](overview.md)** — Detailed comparison
 - **[Security Best Practices](../best-practices/security.md)** — Security recommendations
-- **[Platform Guides](../platforms/)** — Windows and macOS specific
+- **[Platform Guides](../platforms/windows.md)** — Windows and macOS specific
 

@@ -10,31 +10,31 @@ A comprehensive guide for authenticating Tableau, Power BI, and Excel with Snowf
 
 <div class="grid cards" markdown>
 
--   :material-rocket-launch:{ .lg .middle } __[Getting Started](getting-started/overview/)__
+-   :material-rocket-launch:{ .lg .middle } __[Getting Started](getting-started/overview.md)__
 
     Prerequisites, account setup, and initial configuration
 
--   :material-key:{ .lg .middle } __[Authentication Methods](authentication/overview/)__
+-   :material-key:{ .lg .middle } __[Authentication Methods](authentication/overview.md)__
 
     Compare OAuth, SSO, Key-Pair, and Username/Password options
 
--   :material-compass:{ .lg .middle } __[Quick Reference](authentication/quick-reference/)__
+-   :material-compass:{ .lg .middle } __[Quick Reference](authentication/quick-reference.md)__
 
     Decision guide to choose the right authentication method
 
--   :material-chart-areaspline:{ .lg .middle } __[Tableau](bi-tools/tableau/)__
+-   :material-chart-areaspline:{ .lg .middle } __[Tableau](bi-tools/tableau.md)__
 
     Connect Tableau Desktop and Server to Snowflake
 
--   :material-chart-box:{ .lg .middle } __[Power BI](bi-tools/power-bi/)__
+-   :material-chart-box:{ .lg .middle } __[Power BI](bi-tools/power-bi.md)__
 
     Configure Power BI Desktop and Service connections
 
--   :material-table:{ .lg .middle } __[Excel](bi-tools/excel/)__
+-   :material-table:{ .lg .middle } __[Excel](bi-tools/excel.md)__
 
     Set up ODBC connections for Excel data access
 
--   :material-shield-check:{ .lg .middle } __[Best Practices](best-practices/security/)__
+-   :material-shield-check:{ .lg .middle } __[Best Practices](best-practices/security.md)__
 
     Security recommendations and performance optimization
 
