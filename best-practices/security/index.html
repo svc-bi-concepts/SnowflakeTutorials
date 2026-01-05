@@ -2314,8 +2314,8 @@
 <tbody>
 <tr>
 <td><strong>Development</strong></td>
-<td>Username/Password</td>
-<td>Simplicity for testing</td>
+<td>⚠️ Username/Password (test only)</td>
+<td>Simplicity for testing - <strong>not for production</strong></td>
 </tr>
 <tr>
 <td><strong>Production - Users</strong></td>
@@ -2334,6 +2334,17 @@
 </tr>
 </tbody>
 </table>
+<div class="admonition danger">
+<p class="admonition-title">Username/Password: Production Use Prohibited</p>
+<p><strong>Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.</strong> Username/Password authentication is <strong>not suitable for production environments</strong> because:</p>
+<ul>
+<li>MFA will be required, which breaks automated connections and scheduled refreshes</li>
+<li>Credentials stored in connection files pose security risks</li>
+<li>No centralized identity management</li>
+<li>Does not meet enterprise security standards</li>
+</ul>
+<p><strong>Use OAuth/SSO or Key-Pair Authentication for all production environments.</strong></p>
+</div>
 <h3 id="oauthsso-configuration">OAuth/SSO Configuration</h3>
 <p><span class="security-badge security-high">Recommended for Enterprise</span></p>
 <p><strong>Best Practices:</strong></p>
@@ -3207,6 +3218,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mermaid-config.js"></script>
       
     
   

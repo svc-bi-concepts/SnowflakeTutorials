@@ -1527,7 +1527,7 @@
 <td><strong>Username &amp; Password</strong></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 11c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4 9 4zm-9 10c3.75-1 7-5.46 7-9.78V6.3l-7-3.12L5 6.3v4.92C5 15.54 8.25 20 12 21"></path></svg></span> Basic</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.45 4.73L5.82 21z"></path></svg></span> Easy</td>
-<td>Quick testing, individual users</td>
+<td>⚠️ Test/development only - MFA required</td>
 </tr>
 <tr>
 <td><strong>OAuth / SSO</strong></td>
@@ -1597,9 +1597,9 @@
 <li><strong>Troubleshooting</strong> — Common issues and their solutions</li>
 </ol>
 <hr>
-<div class="admonition tip">
-<p class="admonition-title">Recommendation</p>
-<p>For enterprise environments, we strongly recommend using <strong>OAuth/SSO</strong> or <strong>Key-Pair Authentication</strong> over basic username and password for enhanced security.</p>
+<div class="admonition danger">
+<p class="admonition-title">Important: Username &amp; Password Not for Production</p>
+<p><strong>Snowflake is requiring MFA (Multi-Factor Authentication) for all accounts.</strong> Username and password authentication is <strong>not suitable for production environments</strong> because MFA will break automated connections and scheduled refreshes. Use <strong>OAuth/SSO</strong> or <strong>Key-Pair Authentication</strong> for production.</p>
 </div>
 <hr>
 <h2 id="need-help">Need Help?</h2>
@@ -2079,6 +2079,8 @@
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="javascripts/mermaid-config.js"></script>
       
     
   
